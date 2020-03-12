@@ -1,0 +1,11 @@
+<main>
+  <h1>Check a Porker Hand</h1>
+  <%= form_tag("/home/create") do %>
+    <p>
+      <textarea name="content" ><%= @content %></textarea>
+    </p>
+    <p>
+      <input type="submit" value="Check">
+    </p>
+  <% end %>
+</main>
