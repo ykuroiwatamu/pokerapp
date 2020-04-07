@@ -1,20 +1,26 @@
 module Hands
   # 判定できる値かをvalidで確認
    def valid(cards,suits,numbers,errors)
-     unless cards.length==5
+     #binding.pry
+     if cards.length!=5
+       #binding.pry
+       @errors="era-"
      else
        cards.each do |c|
-         binding.pry
+
          #binding.pry
          y = c.split(//)
+         #binding.pry
        # suits.push c[0]
        # numbers.push c[1]
        suits << y[0]
+
        suits.each_with_index do|s,i|
          suit2=s.match(/[S.C.D.H]/)
          #binding.pry
          unless suit2
            @errors="#{i}番目の#{s}は不正です"
+           #binding.pry
          end
        end
        numbers << y[1]
@@ -88,32 +94,12 @@ end
         yaku.each do |c|
           #   yaku.match(/[S.S.S.S.S]/) || (/[D.D.D.D.D]/) || (/[C.C.C.C.C]/) || (/[J.J.J.J.J]/)
           # end
-          if hand
             c.match(/[S.S.S.S.S]/) || (/[D.D.D.D.D]/) || (/[C.C.C.C.C]/) || (/[J.J.J.J.J]/)
-          end
           puts "ストレートフラッシュ"
         end
       end
     end
   end
-
-
-
-  def split_suit_and_num
-    card = hand.split(" ")
-    suits = []
-    numbers =[]
-    card.each do |c|
-      c = c.split(//)
-      # suits.push c[0]
-      # numbers.push c[1]
-      suit = c[0]
-      suits << suit
-      number = c[1]
-      numbers << number
-    end
-  end
-
   def straight(numbers)
       #binding.pry
     max =numbers.max.to_i

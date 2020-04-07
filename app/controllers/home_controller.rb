@@ -23,9 +23,12 @@ class HomeController < ApplicationController
     # hand.each do|h|
     #   validation ()
     #
-    # end
+    # end＃
+    #
+    @content = params[:content]
+    render action:"top"
 
-    redirect_to :action => 'top', :content => params[:content] and return
+    #edirect_to :action => 'top', :content => params[:content] and return
 
   end
 end
