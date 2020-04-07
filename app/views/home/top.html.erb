@@ -1,11 +1,9 @@
 <main>
   <h1>Check a Porker Hand</h1>
   <%= form_tag("/home/create") do %>
-    <p>
-      <textarea name="content" ><%= @content %></textarea>
-    </p>
-    <p>
-      <input type="submit" value="Check">
-    </p>
+<!--      <textarea name="content" ><%#= @content %></textarea>-->
+       <%= text_field_tag :content, "",value: @content %>
+       <%= submit_tag "check" %>
+      <h2> 文字列を入力してください(例：S8 S7 H6 H5 S4)</h2>
   <% end %>
 </main>
