@@ -6,32 +6,42 @@ class HomeController < ApplicationController
  end
   def create
     hand = params[:content]
-    cards = hand.split(" ")
-    #unless cards.length==5
-      error=""
-      #else
-    suits = []
-    numbers =[]
-    @errors ={}
     #binding.pry
-    valid(cards,suits,numbers,@errors)
-    #straight(numbers)
-    judge_flush(suits)
-    #counter(numbers)
+    #unless cards.length==5
+    cards=[]
+    @errors ={}
+    @result ={}
+    #binding.pry
+    cards=valid(hand,@errors)
+    valid(hand,@errors)
+    if @errors!={}
+      render action:"top" and return
+    end
+    if valid_duplication(cards,@errors)
+      render action:"top" and return
+    end
+    suits, numbers = valid_match(cards,@errors)
+    if @errors!={}
+      render action:"top" and return
+    end
+    #binding.pry
+    #binding.pry
+    if straight(numbers)
+      render action:"top" and return
+      end
 
-    # handモジュールのvalidationメソッドを呼び出している
-    # hand.each do|h|
-    #   validation ()
-    #
-    # end＃
-    #
+    if judge_flush(suits)
+      render action:"top" and return
+    end
+    #binding.pry
+    same_judge(numbers)
     @content = params[:content]
     render action:"top"
 
     #edirect_to :action => 'top', :content => params[:content] and return
 
   end
-end
+  end
 
 
 
