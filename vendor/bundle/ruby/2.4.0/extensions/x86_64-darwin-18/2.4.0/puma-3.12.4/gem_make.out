@@ -1,0 +1,38 @@
+current directory: /Users/y.kuroiwa/poker/vendor/bundle/ruby/2.4.0/gems/puma-3.12.4/ext/puma_http11
+/Users/y.kuroiwa/.rbenv/versions/2.4.0/bin/ruby -r ./siteconf20200415-3268-yvqkd1.rb extconf.rb
+checking for BIO_read() in -lcrypto... yes
+checking for SSL_CTX_new() in -lssl... yes
+checking for openssl/bio.h... yes
+creating Makefile
+
+To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+  /Users/y.kuroiwa/poker/vendor/bundle/ruby/2.4.0/extensions/x86_64-darwin-18/2.4.0/puma-3.12.4/mkmf.log
+
+current directory: /Users/y.kuroiwa/poker/vendor/bundle/ruby/2.4.0/gems/puma-3.12.4/ext/puma_http11
+make "DESTDIR=" clean
+
+current directory: /Users/y.kuroiwa/poker/vendor/bundle/ruby/2.4.0/gems/puma-3.12.4/ext/puma_http11
+make "DESTDIR="
+compiling http11_parser.c
+compiling io_buffer.c
+compiling mini_ssl.c
+mini_ssl.c:220:27: warning: 'DTLSv1_method' is deprecated [-Wdeprecated-declarations]
+  conn->ctx = SSL_CTX_new(DTLSv1_method());
+                          ^
+/Users/y.kuroiwa/.rbenv/versions/2.4.0/openssl/include/openssl/ssl.h:1645:1: note: 'DTLSv1_method' has been explicitly marked deprecated here
+DEPRECATEDIN_1_1_0(__owur const SSL_METHOD *DTLSv1_method(void)) /* DTLSv1.0 */
+^
+/Users/y.kuroiwa/.rbenv/versions/2.4.0/openssl/include/openssl/opensslconf.h:136:34: note: expanded from macro 'DEPRECATEDIN_1_1_0'
+# define DEPRECATEDIN_1_1_0(f)   DECLARE_DEPRECATED(f)
+                                 ^
+/Users/y.kuroiwa/.rbenv/versions/2.4.0/openssl/include/openssl/opensslconf.h:110:56: note: expanded from macro 'DECLARE_DEPRECATED'
+#    define DECLARE_DEPRECATED(f)    f __attribute__ ((deprecated));
+                                                       ^
+1 warning generated.
+compiling puma_http11.c
+linking shared-object puma/puma_http11.bundle
+
+current directory: /Users/y.kuroiwa/poker/vendor/bundle/ruby/2.4.0/gems/puma-3.12.4/ext/puma_http11
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 puma_http11.bundle ./.gem.20200415-3268-1hdofkg/puma

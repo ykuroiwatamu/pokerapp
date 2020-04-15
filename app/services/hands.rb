@@ -40,7 +40,7 @@ module Hands
            #binding.pry
            @errors="#{i}番目の#{n}は不正です! 正しい数字を入力してください"
            #binding.pry
-       end
+        end
        end
     return suits, numbers
      end
