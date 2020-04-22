@@ -2,7 +2,7 @@
   <h1>Check a Porker Hand</h1>
   <%= form_tag("/home/create") do %>
 <!--      <textarea name="content" ><%#= @content %></textarea>-->
-       <%= text_field_tag :content, "",value: @content %>
+       <%= text_field_tag :content, "",value: @hand %>
        <%= submit_tag "check" %>
     <%=@result%>
     <%=@errors%>

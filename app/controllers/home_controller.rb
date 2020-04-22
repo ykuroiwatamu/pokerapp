@@ -5,28 +5,29 @@ class HomeController < ApplicationController
     @content = params[:content]
  end
   def create
-    hand = params[:content]
-    cards=[]
-    @errors ={}
-    @result ={}
-    result=[]
+    @hand = params[:content]
 
-    cards=valid(hand,@errors)
-    valid(hand,@errors)
-    if @errors!={}
+    unless valid(@hand)
+      @errors = "カードは５枚です"
       render action:"top" and return
     end
-    if valid_duplication(cards,@errors)
+
+    unless valid_duplication(@hand)
+      @errors="同じカードはだめ"
       render action:"top" and return
     end
-    suits, numbers = valid_matching(cards,@errors)
-    if @errors!={}
+
+    error_messages = []
+    ## [TODO]名前変えておいて
+    ## valid_matchingに引っかかると、返り血がfalseとなり、引数として渡したerror_messagesにエラーが格納される
+    unless valid_matching(@hand, error_messages)
+      @errors = error_messages
       render action:"top" and return
     end
-      @result=judge(numbers, suits, result)
-      render action:"top" and return
-     @content = params[:content]
-    render action:"top"
+
+    ## 札の判定
+    @result=judge(@hand)
+    render action:"top" and return
   end
 end
 

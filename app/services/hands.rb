@@ -1,55 +1,62 @@
 module Hands
   STRENGTH = {
+      "straight_flush" => 0,
       "straight" => 1,
       "four of a kind" => 2,
       "full house" => 3,
       "flush" => 4,
-      "straight" => 5,
-      "three of a kind" => 6,
-      "two pair" => 7,
-      "one pair" => 8,
-      "high card" => 9
+      "three of a kind" => 5,
+      "two pair" => 6,
+      "one pair" => 7,
+      "high card" => 8
   }.freeze
-  # 要素数をしていいするvalid
-  def valid(hand,errors)
-    cards = hand.split(" ")
-     if cards.length!=5
-       @errors="カードは５枚です"
-     end
-    return cards
+
+  def valid(hand)
+    if hand.split(" ").length!=5
+      return false
+    end
+    true
   end
   #　重複確認のvalid
-  def valid_duplication(cards,errors)
-       unless cards.uniq.size ==5
-       @errors="同じカードはだめ"
-       end
+  def valid_duplication(hand)
+    unless hand.split(' ').uniq.size ==5
+      return false
+    end
+    return true
   end
-       # スートと数字を下で分けて正しい値か確認するvalid
-  def valid_matching(cards,errors)
-    suits, numbers =division_num(cards)
-       suits.each_with_index do|s,i|
-         suit2=s.match(/[S.C.D.H]/)
-         unless suit2
-           @errors="#{i}番目の#{s}は不正です! 正しい文字を入力してください"
-         end
-       end
-       #   #binding.pry
-       # numbers << y[1]
-       # #数字
-       numbers.each_with_index do|n,i|
-       #数字を指定(match)
-         numbers2=n.match(/[1-9]|[10-12]/)
-         unless numbers2
-           #binding.pry
-           @errors="#{i}番目の#{n}は不正です! 正しい数字を入力してください"
-           #binding.pry
-        end
-       end
-    return suits, numbers
+  # スートと数字を下で分けて正しい値か確認するvalid
+  def valid_matching(hand, error_messages)
+    suits, numbers =division_num(hand)
+    suits.each_with_index do|s,i|
+      suit2=s.match(/[S.C.D.H]/)
+      unless suit2
+        error_messages << "#{i}番目の#{s}は不正です! 正しい文字を入力してください"
+      end
+    end
+
+    numbers.each_with_index do|n,i|
+      #数字を指定(match)
+      numbers2=n.match(/[1-9]|[10-12]/)
+      unless numbers2
+        error_messages << "#{i}番目の#{n}は不正です! 正しい数字を入力してください"
+      end
+    end
+
+    if error_messages.present?
+      false
+    else
+      true
+    end
   end
 
-  def judge(numbers, suits, result)
+  def judge(hand)
     # こいつの返り値が札の判定(ex:"straight")
+    suits,numbers = division_num(hand)
+    if straight(numbers) && judge_flush(suits)
+      result="straight_flush"
+      return result
+    end
+
     if straight(numbers)
       result="straight"
       return result
@@ -65,12 +72,18 @@ module Hands
       end
     end
   end
+  def judge_straight_and_flush(numbers,suits)
+    if straight(numbers) && judge_flush(suits)
+      true
+    else
+      false
+    end
+  end
 
   def straight(numbers)
-    #binding.pry
     max =numbers.max.to_i
     min =numbers.min.to_i
-    if max - min == 4 ||numbers.uniq.count == 0
+    if max - min == 4 ||numbers.uniq.count == 1
       true
     else
       false
@@ -86,7 +99,6 @@ module Hands
   end
   def same_judge(numbers)
     same_numbers = numbers.group_by{|r|r}.values.map(&:size).sort.reverse
-    #binding.pry
   case same_numbers
   when [2, 2, 1]
     a_poker_hand="two pair"
@@ -103,43 +115,39 @@ module Hands
   end
     return a_poker_hand
   end
-  def division_num(cards)
+
+
+  def division_num(hand)
     suits=[]
     numbers=[]
-    cards.each do |c|
-      y = c.split(//)
-      #スート
-      suits << y[0]
-      numbers << y[1]
+    hand.split(" ").each do |c|
+      suit=c.gsub(/\d/,"")
+      suits << suit
+      number= c.gsub(/[A-Z]/, "")
+      numbers << number
     end
-    return suits, numbers
+    #binding.pry
+    return suits,numbers
   end
 
   #----------------------------------api　役強さ
-
-  def rank
-    strength={}.freeze
-  end
   #cardとhandを集約（api用）
 
   #役の強さに真偽値を返すメソッド
-  def judge_strength(results,result)
+  def judge_strength(results)
 
       results.each do |result|
         result_num = STRENGTH[result[:hand]]
         strength_num=9
-        #binding.pry
         if strength_num > result_num
            strength_num = result_num
-          #binding.pry
         end
         if strength_num == result_num
+          #binding.pry
           result[:best] = true
         else
           result[:best] = false
-          # binding.pry
         end
-        return result[:best]
       end
   end
 
@@ -152,4 +160,16 @@ module Hands
     return
   end
 
+  def error_hand(errors,hand,messages)
+    messages.each do |message|
+      #binding.pry
+    hands_error={}
+    hands_error[:card]=hand
+    hands_error[:msg]=message
+    errors<<hands_error
+      #binding.pry
+    end
+  end
+
 end
+

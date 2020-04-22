@@ -14,26 +14,53 @@ module Ver1
     end
     #役判定のロジック
     post 'poker/check' do
+
       hands = params[:cards]
       results=[]
       errors =[]
       hands.each do |hand|
-        result=[]
-        cards=valid(hand,errors)
-        valid_duplication(cards,errors)
-        suits, numbers = valid_matching(cards,errors)
-        a_poker_hand=judge(numbers, suits, result)
-        #binding.pry
-        api_judge(hand, a_poker_hand,results)
-        judge_strength(results, result)
+        messages={}
+        error_messages = []
+        unless valid(hand)
+          messages="カードは５枚です"
+          error_hand(errors,hand,messages)
+          next
         end
+
+        unless valid_duplication(hand)
+          messages="同じカードはだめ"
+          error_hand(errors,hand,messages)
+          next
+        end
+        unless valid_matching(hand,error_messages)
+          messages=error_messages
+          error_hand(errors,hand,messages)
+          next
+        end
+        a_poker_hand=judge(hand)
+        api_judge(hand, a_poker_hand,results)
+        end
+        judge_strength(results)
       #binding.pry
+      if results.present? && errors.present?
+       {
+          "result":results,
+      "error":errors
+      }
+
+       elsif results.present?
         {
-            "result": results
+            "result":results
+        }
+      elsif errors.present?
+        {
+            "error":errors
         }
       end
   end
+    end
 end
+
 
 
 
