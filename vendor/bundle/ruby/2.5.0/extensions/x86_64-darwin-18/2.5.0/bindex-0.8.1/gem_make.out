@@ -1,0 +1,15 @@
+current directory: /Users/y.kuroiwa/poker/vendor/bundle/ruby/2.5.0/gems/bindex-0.8.1/ext/skiptrace
+/Users/y.kuroiwa/.rbenv/versions/2.5.0/bin/ruby -r ./siteconf20200423-92463-1p7lxz4.rb extconf.rb
+creating Makefile
+
+current directory: /Users/y.kuroiwa/poker/vendor/bundle/ruby/2.5.0/gems/bindex-0.8.1/ext/skiptrace
+make "DESTDIR=" clean
+
+current directory: /Users/y.kuroiwa/poker/vendor/bundle/ruby/2.5.0/gems/bindex-0.8.1/ext/skiptrace
+make "DESTDIR="
+compiling cruby.c
+linking shared-object skiptrace/internal/cruby.bundle
+
+current directory: /Users/y.kuroiwa/poker/vendor/bundle/ruby/2.5.0/gems/bindex-0.8.1/ext/skiptrace
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 cruby.bundle ./.gem.20200423-92463-jdf4w4/skiptrace/internal

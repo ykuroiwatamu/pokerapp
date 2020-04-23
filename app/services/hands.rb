@@ -148,6 +148,7 @@ module Hands
         else
           result[:best] = false
         end
+        #num=result_num
       end
   end
 
