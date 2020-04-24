@@ -5,15 +5,17 @@ class HomeController < ApplicationController
     @content = params[:content]
  end
   def create
+    #binding.pry
     @hand = params[:content]
 
+    #binding.pry
     unless valid(@hand)
       @errors = "カードは５枚です"
       render action:"top" and return
     end
 
     unless valid_duplication(@hand)
-      @errors="同じカードはだめ"
+      @errors="同じカードは不正です"
       render action:"top" and return
     end
 
