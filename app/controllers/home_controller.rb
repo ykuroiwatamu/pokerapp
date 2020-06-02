@@ -3,35 +3,40 @@ class HomeController < ApplicationController
   include Hands
   def top
     @content = params[:content]
- end
-  def create
-    #binding.pry
+  end
+
+  def check
     @hand = params[:content]
+    @errors=[]
 
-    #binding.pry
-    unless valid(@hand)
-      @errors = "カードは５枚です"
-      render action:"top" and return
+    unless judge_Half_width_space(@hand)
+      #b
+      @errors << "5つのカード指定文字を半角スペース区切りで入力してください"
     end
 
-    unless valid_duplication(@hand)
-      @errors="同じカードは不正です"
-      render action:"top" and return
+    unless judge_duplication(@hand)
+      @errors << "カードが重複しています"
+      end
+    error_messages=[]
+
+    unless judge_matching(@hand, error_messages)
+      @errors << error_messages
     end
 
-    error_messages = []
-    ## [TODO]名前変えておいて
-    ## valid_matchingに引っかかると、返り血がfalseとなり、引数として渡したerror_messagesにエラーが格納される
-    unless valid_matching(@hand, error_messages)
-      @errors = error_messages
+    unless @errors.empty?
+      #binding.pry
       render action:"top" and return
     end
 
     ## 札の判定
+    #binding.pry
     @result=judge(@hand)
-    render action:"top" and return
+    #binding.pry
+    render action:"top"
   end
 end
+
+
 
 
 

@@ -1,11 +1,14 @@
 <main>
   <h1>Check a Porker Hand</h1>
-  <%= form_tag("/home/create") do %>
+  <%= form_tag("/home/check") do %>
 <!--      <textarea name="content" ><%#= @content %></textarea>-->
        <%= text_field_tag :content, "",value: @hand %>
        <%= submit_tag "check" %>
     <%=@result%>
-    <%=@errors%>
-      <h2> 文字列を入力してください(例：S8 S7 H6 H5 S4)</h2>
+    <% if @errors.present? %>
+      <%@errors.flatten.each do|error| %>
+        <h2><%= error %></h2>
+      <% end %>
+    <% end %>
   <% end %>
 </main>
